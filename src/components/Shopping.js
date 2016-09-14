@@ -1,35 +1,35 @@
-import React, {Component} from 'react'; // this will be a stateful component
-import md5 from 'md5'; // need to npm i md5 --save
+import React, { Component } from 'react';
+import ShoppingList from './ShoppingList';
+import md5 from 'md5';
+import '../assets/Shopping.css';
 class Shopping extends Component {
-  constructor() {
+  constructor(){
     super();
-    this.state = {cart: []};
     this.add = this.add.bind(this);
+    this.state = {cart: []};
   }
-
-  add() {
-    const name = this.refs.name.value;
-    const category = this.refs.category.value;
-    const time = Date.now(); // uses Sinon's fake timers
-    const picked = false;
-    const hash = md5(name+category+time);
-    this.setState({cart: [...this.state.cart, {name, category, time, picked, hash}]}); // spread the original array into indivdual components, then add in values
+  add(){
+      const item = this.refs.item.value;
+      const category = this.refs.category.value;
+      const time = Date.now();
+      const done = false;
+      const hash = md5(item + category + time);
+      this.setState({cart : [...this.state.cart, {item, category, time, done, hash}]})
   }
-
-
   render() {
     return (
       <div>
-        <h1> shopping Cart </h1>
-        <input type="text" ref="name" />
+        <h1>Shopping Cart</h1>
+        <input type="text" ref="item" />
         <select ref="category">
-          <option>Meat</option>
-          <option>Produce</option>
+            <option>Produce</option>
+            <option>Meat</option>
+            <option>Junk</option>
         </select>
         <button onClick={this.add}>Add</button>
+        <ShoppingList cart={this.state.cart} />
       </div>
     );
   }
 }
-
 export default Shopping;
