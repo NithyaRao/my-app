@@ -1,31 +1,35 @@
 import React, {Component} from 'react'; // this will be a stateful component
-
-class Hello extends Component {
+import md5 from 'md5'; // need to npm i md5 --save
+class Shopping extends Component {
   constructor() {
     super();
-    this.hi = this.hi.bind(this); // to specify what "this" is
-    this.state = {};
+    this.state = {cart: []};
+    this.add = this.add.bind(this);
   }
 
-  // hi() is a instance method and are stored in the prototype
-  hi() {
+  add() {
     const name = this.refs.name.value;
-    this.setState({greeting: `Hello, ${name}`});
+    const category = this.refs.category.value;
+    const time = Date.now(); // uses Sinon's fake timers
+    const picked = false;
+    const hash = md5(name+category+time);
+    this.setState({cart: [...this.state.cart, {name, category, time, picked, hash}]}); // spread the original array into indivdual components, then add in values
   }
 
 
   render() {
     return (
       <div>
-        <h1>
-          Hello World
-        </h1>
+        <h1> shopping Cart </h1>
         <input type="text" ref="name" />
-        <button onClick={this.hi}>Speak</button>
-        <div id="greeting">{this.state.greeting}</div>
+        <select ref="category">
+          <option>Meat</option>
+          <option>Produce</option>
+        </select>
+        <button onClick={this.add}>Add</button>
       </div>
     );
   }
 }
 
-export default Hello;
+export default Shopping;
